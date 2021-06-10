@@ -93,7 +93,8 @@ if cb:
         st.image("body-fat-percentage-calc.jpg", width=None)
 
 
-    activity_level = st.text_input("Enter the activity level(very light,light,moderate,heavy,very heavy)")
+    #activity_level = st.text_input("Enter the activity level(very light,light,moderate,heavy,very heavy)")
+    activity_level = st.selectbox('Enter the activity level',('Very light', 'Light','Moderate','Heavy','Very heavy'))
     activity_level = activity_level.upper()
 
     lean_factor = 0
