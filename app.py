@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 import nltk
 import streamlit as st
@@ -9,6 +8,9 @@ import time
 st.write("""
 # Calorie expenditure prediction app
  """)
+#Moderate exercise intensity: 50% to about 70% of your maximum heart rate
+
+st.markdown(f'<p style="color:#FF0000;font-size:20px;border-radius:2%;">THIS APP CALCULATES THE CALORIC EXPENDITURE FOR A MODERATE INTENSITY EXERCISE(HEART BEAT AROUND 130 BEATS PER MINUTE) UNDER A DURATION OF 30 MIN.</p>',unsafe_allow_html=True)
 cal_predi = open('xgboost_model.pkl', 'rb')
 predictor = pickle.load(cal_predi)
 
@@ -23,12 +25,12 @@ else:
 #print(type(Gender))
 #st.write('You selected:', option)
 #Gender =  st.number_input("Enter the Gender: (1-Male,0-Female)", min_value=0, max_value=1,step=1)
-Age =st.number_input("Enter the Age",step=1)
-Height = st.number_input("Enter the Height:",step=0.1)
+Age =st.number_input("Enter the Age",step=1,max_value=80)
+Height = st.number_input("Enter the Height:",step=0.1,max_value=222.0)
 Weight =  st.number_input("Enter the Weight",step=0.1)
-Duration =  st.number_input("Enter the Duration of physical activity in minutes",step=0.1)
-Heart_Rate =  st.number_input("Enter the average Heart beat rate per minute",step=1)
-Body_Temp = st.number_input("Enter the average body temperature:",step=0.1)
+Duration =  st.number_input("Enter the Duration of physical activity in minutes",step=0.1,max_value=30.0)
+Heart_Rate =  st.number_input("Enter the average Heart beat rate per minute",step=1,max_value=130)
+Body_Temp = st.number_input("Enter the average body temperature:",step=0.1,max_value=41.0)
 submit = st.button("Predict")
 
 age=Age*2
@@ -95,6 +97,7 @@ if cb:
 
     #activity_level = st.text_input("Enter the activity level(very light,light,moderate,heavy,very heavy)")
     activity_level = st.selectbox('Enter the activity level',('Very light', 'Light','Moderate','Heavy','Very heavy'))
+
     activity_level = activity_level.upper()
 
     lean_factor = 0
@@ -162,5 +165,7 @@ if cb:
             with st.spinner('Wait for it...'):
                 time.sleep(3)
                 st.success(string)
+
+
 
 
