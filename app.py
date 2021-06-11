@@ -25,12 +25,12 @@ else:
 #print(type(Gender))
 #st.write('You selected:', option)
 #Gender =  st.number_input("Enter the Gender: (1-Male,0-Female)", min_value=0, max_value=1,step=1)
-Age =st.number_input("Enter the Age",step=1,max_value=80)
-Height = st.number_input("Enter the Height:",step=0.1,max_value=222.0)
-Weight =  st.number_input("Enter the Weight",step=0.1)
-Duration =  st.number_input("Enter the Duration of physical activity in minutes",step=0.1,max_value=30.0)
-Heart_Rate =  st.number_input("Enter the average Heart beat rate per minute",step=1,max_value=130)
-Body_Temp = st.number_input("Enter the average body temperature:",step=0.1,max_value=41.0)
+Age =st.number_input("Enter the Age (MAX-80)",step=1,max_value=80)
+Height = st.number_input("Enter the Height:(MAX-222)",step=0.1,max_value=222.0)
+Weight =  st.number_input("Enter the Weight(MAX-132)",step=0.1)
+Duration =  st.number_input("Enter the Duration of physical activity in minutes (MAX-30)",step=0.1,max_value=30.0)
+Heart_Rate =  st.number_input("Enter the average Heart beat rate per minute (MAX-130)",step=1,max_value=130)
+Body_Temp = st.number_input("Enter the average body temperature (MAX-41):",step=0.1,max_value=41.0)
 submit = st.button("Predict")
 
 age=Age*2
