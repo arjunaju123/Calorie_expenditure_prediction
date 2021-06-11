@@ -5,17 +5,18 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from xgboost import XGBRegressor
-from xgboost import XGBClassifier
+#from xgboost import XGBClassifier
 from sklearn import metrics
 
-from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.svm import SVC
-from sklearn.svm import SVR
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.neighbors import KNeighborsRegressor
+# from sklearn.linear_model import LogisticRegression
+# from sklearn.naive_bayes import MultinomialNB
+# from sklearn.tree import DecisionTreeClassifier
+# from sklearn.tree import DecisionTreeRegressor
+# from sklearn.svm import SVC
+# from sklearn.svm import SVR
+# from sklearn.neighbors import KNeighborsClassifier
+# from sklearn.neighbors import KNeighborsRegressor
+
 # loading the data from csv file to a Pandas DataFrame
 calories = pd.read_csv('calories.csv')
 
@@ -38,19 +39,15 @@ plt.show()
 
 # find the maximum of each column
 maxValues = calories_data.max()
-
 print(maxValues)
 
-# Choose entries with id p01
-df_new = calories_data[calories_data['Calories'] == 314.0]
-
-print(df_new)
-# find maximum value of a
-# single column 'x'
+# find maximum value of a single column 'x'
 #maxClm = calories_data['Calories'].max()
 
-# print("Maximum value in column 'x': ")
-# print(maxClm)
+# Choose entries with calories 314.0
+df_new = calories_data[calories_data['Calories'] == 314.0]
+print(df_new)
+
 
 # checking the number of rows and columns
 #calories_data.shape
@@ -66,7 +63,7 @@ calories_data.isnull().sum()
 
 # sns.set()
 #
-# # plotting the gender column in count plot
+# plotting the gender column in count plot
 # sns.countplot(calories_data['Gender'])
 #
 # # finding the distribution of "Age" column
@@ -109,12 +106,12 @@ model = XGBRegressor()
 # model=DecisionTreeRegressor()
 # model=SVC()
 # model=SVR()
-#model=KNeighborsClassifier()
+# model=KNeighborsClassifier()
 # model=KNeighborsRegressor
 # model1 = KNeighborsRegressor(n_neighbors=2)
 print(model)
-# training the model with X_train
-# xgboost_model=model.fit(X_train, Y_train)
+
+# training the model with X_train and Y_train
 model.fit(X_train, Y_train)
 
 print(model)
@@ -122,7 +119,7 @@ test_data_prediction = model.predict(X_test)
 
 # X_test.head()
 
-#Get a new Data and Check the calorie expenditure
+#Get a new Data and Check the calorie expenditure(in the terminal)
 # New_gender=int(input('Enter the gender : '))
 # New_age=int(input('Enter the age : '))
 # New_height=int(input('Enter the height : '))
@@ -131,96 +128,27 @@ test_data_prediction = model.predict(X_test)
 # New_heartrate=int(input('Enter the heart rate : '))
 # New_temp=int(input('Enter the body temp : '))
 # New_Data=np.array([ [New_gender,New_age,New_height,New_weight,New_duration,New_heartrate,New_temp]])
-# # New_Data_User = pd.DataFrame(New_Data,columns=['Gender', 'Age','Height','Weight','Duration','Heart_Rate','Body_Temp'])
-# # print(New_Data_User.head())
-# # calorie_pred = model.predict(New_Data_User)
+# New_Data_User = pd.DataFrame(New_Data,columns=['Gender', 'Age','Height','Weight','Duration','Heart_Rate','Body_Temp'])
+# print(New_Data_User.head())
+# calorie_pred = model.predict(New_Data_User)
 # calorie_pred = model.predict(New_Data)
 # print(calorie_pred)
 
-#np.array([[1,41,172.0,74.0,24.0,98.0,40.8]])
 
-# test_data_prediction1 = model.predict(np.array([[1,41,172.0,74.0,24.0,98.0,40.8]]))
 # print(model.predict(np.array([[Gender,Age,Height,Weight,Duration,Heart_Rate,Body_Temp]])))
 print(model.predict(np.array([[1,41,172.0,74.0,24.0,98.0,40.8]])))
-print("Done")
-# print(test_data_prediction1)
+print(model.predict(np.array([[1,75,199.0,103.0,28.0,123.0,40.5]])))
 
 mae = metrics.mean_absolute_error(Y_test, test_data_prediction)
 
 print("Mean Absolute Error = ", mae)
-print(model.predict(np.array([[1,75,199.0,103.0,28.0,123.0,40.5]])))
 print(model)
-# Saving the multinomial nb model as a pickle file
+
+# Saving the xgboost model as a pickle file
 import pickle
 pickle_file = open("xgboost_model.pkl","wb")
 pickle.dump(model, pickle_file)
 pickle_file.close()
 
-# import xgboost
-# print(xgboost.__version__)
-# import joblib
-# joblib.dump(model, 'xgb_model.joblib.dat')
-#joblib.dump(vectorizer, 'CountVectorizer.joblib')
 
-# import joblib
-# print("""
-# # Calorie prediction app
-#  """)
-# #xgboost_predictor = open('xgboost_model.pkl','rb')
-# predictor = joblib.load('xgb_model.joblib.dat')
-# print(predictor)
-# #predictor = pickle.load(xgboost_predictor)
-# #Text Input
-# Gender =  input("Enter the Gender: (1-Male,0-Female)")
-# Age = input("Enter the Age",)
-# Height = input("Enter the Height:")
-# Weight =  input("Enter the Weight")
-# Duration =  input("Enter the Duration")
-# Heart_Rate =  input("Enter the Heart rate")
-# Body_Temp = input("Enter the body temperature:")
-#
-#
-# print("Success")
-# print(predictor.predict(np.array([[Gender,Age,Height,Weight,Duration,Heart_Rate,Body_Temp]])))
 
-import pandas as pd
-# import numpy as np
-# import nltk
-# import streamlit as st
-# import pandas as pd
-# import pickle
-# import joblib
-# st.write("""
-# # Calorie prediction app
-#  """)
-# #xgboost_predictor = open('xgboost_model.pkl','rb')
-# #predictor = joblib.load('xgb_model.joblib.dat')
-# #predictor = pickle.load(xgboost_predictor)
-# #print(predictor)
-# #Text Input
-# Gender =  st.text_input("Enter the Gender: (1-Male,0-Female)")
-# Age = st.text_input("Enter the Age",)
-# Height = st.text_input("Enter the Height:")
-# Weight =  st.text_input("Enter the Weight")
-# Duration =  st.text_input("Enter the Duration")
-# Heart_Rate =  st.text_input("Enter the Heart rate")
-# Body_Temp = st.text_input("Enter the body temperature:")
-# submit = st.button("Predict")
-#
-# st.write(type(Age))
-# # arr=[[Gender,Age,Height,Weight,Duration,Heart_Rate,Body_Temp]]
-# # st.write(type(arr))
-# #st.write(type(predictor.predict(np.array([[Gender,Age,Height,Weight,Duration,Heart_Rate,Body_Temp]]))))
-# if submit:
-#     st.write("Success")
-# 	#result = classifier.predict([[Gender,Age,Height,Weight,Duration,Heart_Rate,Body_Temp]])
-#     st.write(model.predict(np.array([[1,41,172.0,74.0,24.0,98.0,40.8]])))
-    #st.write(type(predictor.predict([[Gender,Age,Height,Weight,Duration,Heart_Rate,Body_Temp]])))
-    #st.write(type(result))
-	# if result ==0:
-	# 	st.write("yes")
-	# else:
-	# 	st.write("No")
-	# 	#st.write(result)
-# if st.button('Submit'):
-#     st.write('The email you entered is:',spam_predict(vectorised_text))
