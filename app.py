@@ -33,14 +33,18 @@ if(Height=='In feet' or Height=='In metres' or Height=='In centimetres' ):
     else:
         Height_cm=st.number_input("Enter the Height in centimetres:",step=0.1,max_value=222.0)
 #Height = st.number_input("Enter the Height:",step=0.1,max_value=222.0)
-Weight_Kg=None
+
+Weight_Kg=0
+#Weight_pounds=0
 Weight = st.selectbox('Choose the metric to input body weight',('In Kilograms', 'In Pounds'))
 if(Weight=='In Kilograms' or Weight=='In Pounds'):
+    #Weight_Kg = 0
     if(Weight=='In Kilograms'):
-        Weight_kg = st.number_input("Enter your Body Weight in kilograms", step=0.1)
+        Weight_Kg = st.number_input("Enter your Body Weight in kilograms", step=0.1)
     elif(Weight=='In Pounds'):
         Weight_pounds = st.number_input("Enter your Body Weight in pounds", step=0.1)
         Weight_Kg = Weight_pounds/2.2
+
 #Weight =  st.number_input("Enter the Weight",step=0.1)
 Lean_Body_Mass=st.number_input("Enter your lean body mass",step=0.1)
 Duration =  st.number_input("Enter the Duration of physical activity in minutes",step=0.1,max_value=30.0)
@@ -59,9 +63,7 @@ submit = st.button("Predict")
 age=Age*2
 
 #arr=predictor.predict(np.array([[Gender,Age,Height,Weight,Duration,Heart_Rate,Body_Temp]]))
-
 if submit:
-
     if (Weight_Kg==0.0 or Body_Temp_cel == 0.0 or Heart_Rate == 0 or Duration==0.0 or Age==0 or Lean_Body_Mass==0.0 or Height_cm==0.0):
         st.warning("Alert!!!! Please Enter all the required fields")
     else:
@@ -155,5 +157,7 @@ if cb:
             with st.spinner('Wait for it...'):
                 time.sleep(3)
                 st.success(string)
+
+
 
 
