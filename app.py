@@ -1,15 +1,12 @@
 import numpy as np
-import nltk
 import streamlit as st
 import pickle
-import joblib
 import time
 
 st.write("""
 # Calorie expenditure prediction app
  """)
 #Moderate exercise intensity: 50% to about 70% of your maximum heart rate
-
 st.markdown(f'<p style="color:#FF0000;font-size:20px;border-radius:2%;">THIS APP CALCULATES THE CALORIC EXPENDITURE FOR A MODERATE INTENSITY EXERCISE(HEART BEAT AROUND 130 BEATS PER MINUTE) UNDER A DURATION OF 30 MIN.</p>',unsafe_allow_html=True)
 cal_predi = open('xgboost_model.pkl', 'rb')
 predictor = pickle.load(cal_predi)
@@ -22,71 +19,63 @@ if(Gender=='Male'):
     Gender=1
 else:
     Gender=0
-#print(type(Gender))
-#st.write('You selected:', option)
-#Gender =  st.number_input("Enter the Gender: (1-Male,0-Female)", min_value=0, max_value=1,step=1)
-Age =st.number_input("Enter the Age (MAX-80)",step=1,max_value=80)
-Height = st.number_input("Enter the Height:(MAX-222)",step=0.1,max_value=222.0)
-Weight =  st.number_input("Enter the Weight(MAX-132)",step=0.1)
-Duration =  st.number_input("Enter the Duration of physical activity in minutes (MAX-30)",step=0.1,max_value=30.0)
-Heart_Rate =  st.number_input("Enter the average Heart beat rate per minute (MAX-130)",step=1,max_value=130)
-Body_Temp = st.number_input("Enter the average body temperature (MAX-41):",step=0.1,max_value=41.0)
+
+Age =st.number_input("Enter the Age",step=1,max_value=80)
+Height = st.selectbox('Choose the metric to input height',('In feet', 'In metres','In centimetres'))
+if(Height=='In feet' or Height=='In metres' or Height=='In centimetres' ):
+    if(Height=='In feet'):
+        Height_feet = st.number_input("Enter your height in feet", step=0.1,max_value=7.283)
+        Height_cm=Height_feet*30.48
+    elif(Height=='In metres'):
+        Height_metre = st.number_input("Enter your height in metre", step=0.1, max_value=2.22)
+        Height_cm = Height_metre * 100
+    else:
+        Height_cm=st.number_input("Enter the Height in centimetres:",step=0.1,max_value=222.0)
+#Height = st.number_input("Enter the Height:",step=0.1,max_value=222.0)
+Weight = st.selectbox('Choose the metric to input body weight',('In Kilograms', 'In Pounds'))
+if(Weight=='In Kilograms' or Weight=='In Pounds'):
+    if(Weight=='In Kilograms'):
+        Weight_kg = st.number_input("Enter your Body Weight in kilograms", step=0.1)
+    elif(Weight=='In Pounds'):
+        Weight_pounds = st.number_input("Enter your Body Weight in pounds", step=0.1)
+        Weight_Kg = Weight_pounds/2.2
+#Weight =  st.number_input("Enter the Weight",step=0.1)
+Lean_Body_Mass=st.number_input("Enter your lean body mass",step=0.1)
+Duration =  st.number_input("Enter the Duration of physical activity in minutes",step=0.1,max_value=30.0)
+Heart_Rate =  st.number_input("Enter the average Heart beat rate per minute",step=1,max_value=130)
+#Body_Temp = st.number_input("Enter the average body temperature:",step=0.1,max_value=41.0)
+Body_Temp = st.selectbox('Choose the metric to input the Body Temperature',('In Celsius', 'In Faranheit'))
+if(Body_Temp=='In Celsius' or Body_Temp=='In Faranheit'):
+    if(Body_Temp=='In Celsius'):
+        Body_Temp_cel = st.number_input("Enter your Body temperature in celsius", step=0.1,max_value=41.0)
+    elif(Body_Temp=='In Faranheit'):
+        Body_Temp_far = st.number_input("Enter your Body temperature in faranheit", step=0.1,max_value=105.8)
+        Body_Temp_cel = (Body_Temp_far - 32.0) * 5.0/9.0
 submit = st.button("Predict")
 
 age=Age*2
-# st.write(age)
-#13079051,male,75,199.0,103.0,28.0,123.0,40.5
-arr=predictor.predict(np.array([[Gender,Age,Height,Weight,Duration,Heart_Rate,Body_Temp]]))
 
-#out_arr=arr[0]
-#st.text(out_arr)
-# st.text(type(out_arr))
+#arr=predictor.predict(np.array([[Gender,Age,Height,Weight,Duration,Heart_Rate,Body_Temp]]))
 
 if submit:
 
-    if (Body_Temp == 0.0 or Heart_Rate == 0 or Duration==0.0 or Age==0  or Height==0.0 or Weight==0.0):
+    if (Body_Temp_cel == 0.0 or Heart_Rate == 0 or Duration==0.0 or Age==0 or Lean_Body_Mass==0.0 or Height_cm==0.0 or Weight_Kg==0.0):
         st.warning("Alert!!!! Please Enter all the required fields")
-
-    # elif (bf == 0.0):
-    #     st.warning("Alert!!!! Please Enter the body fat percentage")
-    # elif (activity_level == 0):
-    #     st.warning("Alert!!!! Please Enter a valid Activity level")
-    #     # st.subheader(main_cal)
-    #
     else:
-        arr = predictor.predict(np.array([[Gender, Age, Height, Weight, Duration, Heart_Rate, Body_Temp]]))
+        arr = predictor.predict(np.array([[Gender, Age, Height_cm, Weight_Kg, Duration, Heart_Rate, Body_Temp_cel,Lean_Body_Mass]]))
         string = str(arr[0])
         string += " Calories are burned"
         with st.spinner('Wait for it...'):
             time.sleep(3)
             st.success(string)
 
-        #st.markdown(f'<p style="color:#ffffff;font-size:35px;border-radius:2%;">MAINTAINENCE CALORIE CALCULATOR</p>',unsafe_allow_html=True)
-    #st.subheader(string)
-    #st.success("calories")
 
 cb = st.checkbox('Click here to calculate your maintainence calories:')
-#f'<p style="color:#33ff33;font-size:32px;border-radius:1%;">MAINTAINENCE CALORIE CALCULATOR</p>', unsafe_allow_html=True
 if cb:
-    #st.markdown(f'<p style="color:#ffffff;font-size:35px;border-radius:2%;">MAINTAINENCE CALORIE CALCULATOR</p>', unsafe_allow_html=True)
-    #st.header('MAINTAINENCE CALORIE CALCULATOR')
+
     st.write("""
     # MAINTAINENCE CALORIE CALCULATOR
      """)
-    # if(arr[0]>=0 and arr[0]<=300):
-    #     st.subheader("Very light")
-    #
-    # elif(arr[0]>300 and arr[0]<=500):
-    #     st.subheader("light")
-    #
-    # elif(arr[0]>500 and arr[0]<=800):
-    #     st.subheader("moderate")
-    #
-    # elif(arr[0]>800 and arr[0]<=1000):
-    #     st.subheader("Heavy")
-    #
-    # else:
-    #     st.subheader("Very heavy")
 
     bf = st.number_input("Enter your body fat percentage :")
 
@@ -95,14 +84,13 @@ if cb:
         st.image("body-fat-percentage-calc.jpg", width=None)
 
 
-    #activity_level = st.text_input("Enter the activity level(very light,light,moderate,heavy,very heavy)")
     activity_level = st.selectbox('Enter the activity level',('Very light', 'Light','Moderate','Heavy','Very heavy'))
 
     activity_level = activity_level.upper()
 
     lean_factor = 0
     if (Gender == 1):
-        Weight = Weight * 1
+        Weight_Kg = Weight_Kg * 1
         if (bf >= 10 and bf <= 14):
             lean_factor = 1.0
         elif (bf > 14 and bf <= 20):
@@ -112,7 +100,7 @@ if cb:
         elif (bf > 28):
             lean_factor = 0.85
     elif (Gender == 0):
-        Weight = Weight * 0.9
+        Weight_Kg = Weight_Kg * 0.9
         if (bf >= 14 and bf <= 18):
             lean_factor = 1.0
         elif (bf > 18 and bf <= 28):
@@ -124,7 +112,7 @@ if cb:
     else:
         st.text("Enter a valid input-- 1 for male and 0 for female")
 
-    BMR = Weight * 24 * (lean_factor)
+    BMR = Weight_Kg * 24 * (lean_factor)
 
     if (activity_level == 'VERY LIGHT'):
         main_cal = BMR * 1.3
@@ -145,9 +133,8 @@ if cb:
         activity_level = 0
     submit = st.button("Submit")
     if submit:
-        # st.write("Success")
-        #st.write(type(main_cal))
-        if (Body_Temp == 0.0 or Heart_Rate == 0 or Duration == 0.0 or Age == 0 or Height == 0.0 or Weight == 0.0):
+
+        if (Body_Temp_cel == 0.0 or Heart_Rate == 0 or Duration == 0.0 or Age == 0 or Height_cm == 0.0 or Weight_Kg == 0.0):
             st.warning("Alert!!!! Please Enter all the required fields")
 
         elif(bf==0.0 and activity_level==0):
@@ -157,7 +144,7 @@ if cb:
             st.warning("Alert!!!! Please Enter the body fat percentage")
         elif(activity_level==0):
             st.warning("Alert!!!! Please Enter a valid Activity level")
-        #st.subheader(main_cal)
+
 
         else:
             string=str(main_cal)
