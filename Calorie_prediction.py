@@ -1,4 +1,3 @@
-
 #Importing the Dependencies
 import numpy as np
 import pandas as pd
@@ -42,7 +41,7 @@ calories_data.replace({"Gender":{'male':0,'female':1}}, inplace=True)
 # For females:
 # eLBM = 0.252W + 0.473H - 48.3
 
-#Adding additional feature "lean body mass".
+#Adding additional feature
 #Body Composition: A person with more muscle will often burn more calories than a person with higher body fat.
 #the more Lean Body Mass you have, the greater your  Metabolic Rate will be.
 calories_data['Lean_Body_mass']=(calories_data['Weight']*0.407+calories_data['Height']*0.267-19.2)*calories_data['Gender']
@@ -153,7 +152,6 @@ print(X.shape, X_train.shape, X_test.shape,Y_train.shape,Y_test.shape)
 # print("Mean Absolute Error of linear regression model = ", mae)
 # print(test_data_prediction)
 # #
-
 # # SUPPORT VECTOR REGRESSION MODEL
 # # loading the model
 # model=SVR()
@@ -166,7 +164,6 @@ print(X.shape, X_train.shape, X_test.shape,Y_train.shape,Y_test.shape)
 # print("Mean Absolute Error of Support vector regressor is = ", mae)
 # print(test_data_prediction)
 # #
-
 # #KNeighbours REGRESSION MODEL
 # # loading the model
 # model = KNeighborsRegressor(n_neighbors=2)
@@ -179,7 +176,6 @@ print(X.shape, X_train.shape, X_test.shape,Y_train.shape,Y_test.shape)
 # print("Mean Absolute Error of K neighbours regressor is = ", mae)
 # print(test_data_prediction)
 # #
-
 # #DECISION TREE MODEL
 # # loading the model
 # model=DecisionTreeRegressor()
@@ -192,7 +188,6 @@ print(X.shape, X_train.shape, X_test.shape,Y_train.shape,Y_test.shape)
 # print("Mean Absolute Error of Decision tree model is = ", mae)
 # print(test_data_prediction)
 #
-
 # XGBOOST REGRESSION MODEL
 # loading the model
 model = XGBRegressor()
@@ -204,11 +199,11 @@ test_data_prediction = model.predict(X_test)
 mae = metrics.mean_absolute_error(Y_test, test_data_prediction)
 print("Mean Absolute Error of XGBOOST Regression model is = ", mae)
 print(test_data_prediction)
-
-#print(model.predict(np.array([[1,21,182,87.0,30.0,98.0,40.8]])))
-
-
-# Saving the xgboost model as a pickle file
+#
+#
+print(model.predict(np.array([[1,21,182,87.0,30.0,98.0,40.8]])))
+#
+# # Saving the model as a pickle file
 import pickle
 pickle_file = open("xgboost_model.pkl","wb")
 pickle.dump(model, pickle_file)
