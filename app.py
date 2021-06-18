@@ -22,6 +22,7 @@ else:
 
 Age =st.number_input("Enter the Age",step=1,max_value=80)
 Height = st.selectbox('Choose the metric to input height',('In feet', 'In metres','In centimetres'))
+Height_cm=0
 if(Height=='In feet' or Height=='In metres' or Height=='In centimetres' ):
     if(Height=='In feet'):
         Height_feet = st.number_input("Enter your height in feet", step=0.1,max_value=7.283)
@@ -32,6 +33,7 @@ if(Height=='In feet' or Height=='In metres' or Height=='In centimetres' ):
     else:
         Height_cm=st.number_input("Enter the Height in centimetres:",step=0.1,max_value=222.0)
 #Height = st.number_input("Enter the Height:",step=0.1,max_value=222.0)
+Weight_Kg=None
 Weight = st.selectbox('Choose the metric to input body weight',('In Kilograms', 'In Pounds'))
 if(Weight=='In Kilograms' or Weight=='In Pounds'):
     if(Weight=='In Kilograms'):
@@ -44,6 +46,7 @@ Lean_Body_Mass=st.number_input("Enter your lean body mass",step=0.1)
 Duration =  st.number_input("Enter the Duration of physical activity in minutes",step=0.1,max_value=30.0)
 Heart_Rate =  st.number_input("Enter the average Heart beat rate per minute",step=1,max_value=130)
 #Body_Temp = st.number_input("Enter the average body temperature:",step=0.1,max_value=41.0)
+Body_Temp_cel=0
 Body_Temp = st.selectbox('Choose the metric to input the Body Temperature',('In Celsius', 'In Faranheit'))
 if(Body_Temp=='In Celsius' or Body_Temp=='In Faranheit'):
     if(Body_Temp=='In Celsius'):
@@ -59,7 +62,7 @@ age=Age*2
 
 if submit:
 
-    if (Body_Temp_cel == 0.0 or Heart_Rate == 0 or Duration==0.0 or Age==0 or Lean_Body_Mass==0.0 or Height_cm==0.0 or Weight_Kg==0.0):
+    if (Weight_Kg==0.0 or Body_Temp_cel == 0.0 or Heart_Rate == 0 or Duration==0.0 or Age==0 or Lean_Body_Mass==0.0 or Height_cm==0.0):
         st.warning("Alert!!!! Please Enter all the required fields")
     else:
         arr = predictor.predict(np.array([[Gender, Age, Height_cm, Weight_Kg, Duration, Heart_Rate, Body_Temp_cel,Lean_Body_Mass]]))
